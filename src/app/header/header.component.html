@@ -1,0 +1,78 @@
+<header>
+    <nav class="navbar navbar-expand navbar-dark bg-dark px-2">
+        <a routerLink="" class="navbar-brand px-4">TvFlix</a>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a routerLinkActive="active" routerLink="phim-bo" class="nav-link" role="button">
+                        Phim bộ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" routerLink="phim-le" class="nav-link" role="button">
+                        Phim lẻ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" routerLink="phim-chieu-rap" class="nav-link" role="button">
+                        Phim chiếu rạp
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                        Quốc gia
+                    </a>
+                    <ul class="dropdown-menu p-0 border-0 shadow rounded-1 bg-body-tertiary">
+                        <div style="width: 700px" class="p-3">
+                            <div class="row">
+                                <div class="col-3" *ngFor="let item of countries">
+                                    <a routerLinkActive="active" routerLink="quoc-gia/{{item.slug}}" class="dropdown-item">{{item.name}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                        Thể loại
+                    </a>
+                    <ul class="dropdown-menu p-0 border-0 shadow rounded-1 bg-body-tertiary">
+                        <div style="width: 700px" class="p-3">
+                            <div class="row">
+                                <div class="col-3" *ngFor="let item of genres">
+                                    <a routerLinkActive="active" routerLink="the-loai/{{item.slug}}" class="dropdown-item">{{item.name}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" routerLink="cua-hang" class="nav-link" role="button">
+                        Cửa hàng
+                    </a>
+                </li>
+            </ul>
+        </div>
+    
+        <!-- <form action="" class="d-flex me-5">
+            <input type="search" class="form-control me-2" placeholder="Search">
+            <button class="btn btn-outline-light" type="submit">Search</button>
+        </form> -->
+    
+        <div *ngIf="isLoggedIn" class="dropstart mt-0">
+            <div class="position-relative dropdown-toggle" style="cursor: pointer;" data-bs-toggle="dropdown">
+                <img *ngIf="img" class="rounded-circle shadow-4" src="{{img}}" alt="Avatar"
+                    style="width: 40px; height: 40px;">
+            </div>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li *ngIf="role == 'ADMIN'"><button routerLink="admin" class="dropdown-item">Trang admin</button></li>
+                <li><button (click)="goToProfile()" class="dropdown-item">Thông tin cá nhân</button></li>
+                <li><button routerLink="" class="dropdown-item">Đơn hàng</button></li>
+                <li><button (click)="logout()" class="dropdown-item">Đăng xuất</button></li>
+            </ul>
+        </div>
+        <div *ngIf="!isLoggedIn">
+            <button routerLink="login" type="button" class="btn btn-outline-light" mdbRipple rippleColor="dark">Đăng nhập</button>
+        </div>
+    </nav>
+</header>

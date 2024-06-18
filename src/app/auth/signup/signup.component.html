@@ -1,0 +1,65 @@
+<div class="container m-5">
+    <form [formGroup]="signupForm" (ngSubmit)="registerSubmited()" class="border p-3 rounded-3">
+        <div class="row g-0">
+            <div class="col text-center p-2 mb-3 bg-light">
+                <span class="fs-3">Register</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="yourname" class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" id="yourname" formControlName="name">
+                <div class="form-text text-danger" *ngIf="Name.errors?.['required'] && (Name.dirty || Name.touched)">
+                    Tên không được để trống
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+                <div class="form-text"></div>
+                <div class="form-text text-danger" *ngIf="Email.errors?.['required'] && (Email.dirty || Email.touched)">
+                    Email không được để trống
+                </div>
+                <div class="form-text text-danger" *ngIf="Email.errors?.['email'] && (Email.dirty || Email.touched)">
+                    Email sai định dạng
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" formControlName="pwd">
+                <div class="form-text"></div>
+                <div class="form-text text-danger" *ngIf="Pwd.errors?.['required'] && (Pwd.dirty || Pwd.touched)">
+                    Mật khẩu không được để trống
+                </div>
+                <div class="form-text text-danger"
+                    *ngIf="Pwd.errors?.['minlength'] || Pwd.errors?.['maxlength'] && (Pwd.dirty || Pwd.touched)">
+                    Mật khẩu nên có ít nhất 6 - 15 ký tự
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="rpassword" class="form-label">Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" id="rpassword" formControlName="rpwd">
+                <div class="form-text"></div>
+                <div class="form-text text-danger" *ngIf="signupForm.hasError('passwordMismatch')">
+                    Mật khẩu không khớp.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="d-grid">
+                    <button type="submit" [disabled]="signupForm.invalid" class="btn btn-primary">Đăng ký</button>
+                </div>
+            </div>
+            <div class="col-6 offset-3 mt-2 text-center">
+                <a routerLink="/login">Đăng nhập</a>
+            </div>
+        </div>
+    </form>
+</div>

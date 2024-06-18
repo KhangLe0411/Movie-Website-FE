@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="m-2" style="padding: 20px; min-height: 360px; background: rgb(255, 255, 255); border-radius: 8px;">
+        <div class="d-flex mb-3">
+            <div class="btn btn-primary rounded-3 me-2"><a style="text-decoration: none; color: white;" routerLink="/admin/movies/create">Tạo film</a></div>
+            <div class="btn btn-secondary rounded-3 ms-2"><a style="text-decoration: none; color: white;" routerLink="/admin/movies">Refresh</a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="tables" class="display table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tên phim</th>
+                                        <th>Loại phim</th>
+                                        <th>Năm phát hành</th>
+                                        <th>Thể loại</th>
+                                        <th>Lượt xem</th>
+                                        <th>Đánh giá</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center align-middle" style="overflow-wrap: break-word;"><a routerLink="/admin/movies/1/detail" routerLinkActive="active">Xác Ướp: Cuộc Phiêu Lưu Đến London</a></td>
+                                        <td class="text-center align-middle">
+                                            <div class="d-flex flex-column">
+                                                Phim bộ
+                                                <span class="d-inline-block badge bg-danger">Premium</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center align-middle">2022</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">Gia đình</span><br>
+                                            <span class="badge bg-info me-1">Phiêu lưu</span>
+                                        </td>
+                                        <td class="align-middle">3,168</td>
+                                        <td class="align-middle">
+                                            <span>7.4</span>
+                                            <span style="color: #EDBB0E;"><i class="fas fa-star"></i></span>
+                                        </td>
+                                        <td class="align-middle"><span class="badge bg-success">Công khai</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

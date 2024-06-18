@@ -1,0 +1,25 @@
+a {
+    text-decoration: none;
+}
+
+.pading-md {
+    padding-right: 53px;
+    padding-left: 53px;
+}
+
+.movie-item {
+    position: relative;
+}
+
+.movie-item .movie-poster {
+    height: 250px;
+}
+
+.movie-item img:hover {
+    transform: scale(1.1);
+}
+
+.movie-item .movie-poster img {
+    object-fit: cover;
+    transition: all 0.3s ease-in-out;
+}

@@ -1,0 +1,367 @@
+<main role="main" class="body">
+    <div class="cast-container" style="background-image: url('{{movieDetail?.poster}}')">
+        <div class="cast-wrap d-flex">
+            <div class="movie-poster">
+                <img class="rounded" src="{{movieDetail?.poster}}" style="width: 255px; height: 378px; object-fit: cover;" alt="">
+
+                <a class="btn btn-primary btn-lg btn-block"
+                    *ngIf="movieDetail?.accessType == 'FREE'"
+                    routerLinkActive="active" 
+                    routerLink="/xem-phim/{{movieDetail?.id}}/{{movieDetail?.slug}}" [queryParams]="{tap: movieDetail?.type === 'PHIM_BO' ? '1' : 'full'}">
+                    <i class="fa fa-television" aria-hidden="true"></i> Xem phim
+                </a>
+
+                <a (click)="openModalBuyMovie()" class="btn btn-primary btn-lg btn-block" *ngIf="movieDetail?.accessType == 'PAID'">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> Mua phim: {{(+movieDetail.price) | number: '1.0-0'}}đ
+                </a>
+
+                <!-- Button trigger modal -->
+                <button class="btn btn-secondary btn-lg btn-block" (click)="openTrailerModal()">
+                    Trailer
+                </button>
+
+                <!-- Modal buy movie -->
+                <div class="modal" id="modalBuyMovie">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header pb-1 pt-1">
+                                <h4 class="modal-title text-black">Mua Phim</h4>
+                                <button (click)="closeModalBuyMovie()" aria-label="Close" class="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="movie-item">
+                                            <div class="movie-poster rounded overflow-hidden">
+                                                <img src="{{movieDetail?.poster}}" alt="Thế thân"
+                                                    class="w-100 h-100">
+                                            </div>
+                                            <p class="my-2 text-black">{{movieDetail?.title}}</p>
+                                            <h5 class="fw-medium text-danger">{{(+movieDetail?.price) | number: '1.0-0'}}đ</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <h5 class="mb-1 text-black">Hình thức thanh toán</h5>
+                                        <ul class="payment-container ps-0">
+                                            <li class="payment-item">
+                                                <div class="d-flex align-items-center">
+                                                    <input type="radio" name="payment-method" id="bank-transfer"
+                                                        class="form-check-input" value="BANK_TRANSFER" checked>
+                                                    <label for="bank-transfer" class="form-check-label">
+                                                        <span class="text-black">
+                                                            Chuyển khoản trực tiếp
+                                                        </span>
+                                                        <img class="mb-0"
+                                                            src="http://103.237.144.171:8888/assets/bank-transfer-CmiaakvM.png" alt="">
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="info-bank-transfer bg-body-tertiary p-2">
+                                            <h5 class="text-black">Thông tin tài khoản</h5>
+                                            <div class="text-small fw-semibold text-black">
+                                                <div class="row mb-1">
+                                                    <div class="col-4">Ngân hàng</div>
+                                                    <div class="col-8 text-gray-500">Vietcombank</div>
+                                                </div>
+                                                <div class="row mb-1">
+                                                    <div class="col-4">Số tài khoản</div>
+                                                    <div class="col-8 text-gray-500">02482042829349</div>
+                                                </div>
+                                                <div class="row mb-1">
+                                                    <div class="col-4">Chủ tài khoản</div>
+                                                    <div class="col-8 text-gray-500">Nguyễn Văn A</div>
+                                                </div>
+                                                <div class="col-12 text-center">Nội dung chuyển khoản</div>
+                                                <div class="col-12 text-gray-500">{{currentUser?.name}} - {{currentUser?.email}} -
+                                                    {{movieDetail?.title}}</div>
+                                                <hr>
+                                                <div class="row">
+                                                    <p class="fw-normal fst-italic">Sau khi chuyển khoản thành công. Hãy bấm vào
+                                                        "<span class="fw-semibold">Xác nhận đơn hàng</span>"
+                                                    </p>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="d-block w-100 btn btn-success" id="btn-submit-order">
+                                                            Xác nhận mua hàng
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End modal buy movie -->
+
+                <!-- Modal -->
+                <div class="modal bd-example-modal-lg" id="trailerMovie">
+                    <div class="modal-dialog modal-lg"> <!-- Thay đổi kích thước modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-black" id="trailerMovieLabel">Trailer {{movieDetail?.title}}</h5>
+                                <button class="btn-close" (click)="closeTrailerModal()" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe #videoPlayer width="100%" height="420"
+                                    [src]="movieDetail?.trailerUrl | safe"
+                                    frameborder="0" gesture="media" crossorigin="anonymous" allow="encrypted-media" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tập phim -->
+                <div class="mt-4" *ngIf="movieDetail?.type === 'PHIM_BO' && episodes.length > 0 && accessEpisodes">
+                    <h3 class="mb-3">Tập phim</h3>
+                    <div class="grid-container">
+                        <a routerLinkActive="active" 
+                        routerLink="/xem-phim/{{movieDetail?.id}}/{{movieDetail?.slug}}" [queryParams]="{tap: episode?.orderEpisode}" 
+                        class="btn btn-light me-2 mb-2 text-light" 
+                        *ngFor="let episode of episodes">{{ episode?.title }}</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.movie-poster -->
+            <div class="cast-info">
+                <div class="cast-name">
+                    <h3>{{movieDetail?.title}}</h3>
+                </div>
+                <div class="cast-job">
+                    <!-- <a href="#">Justice League (2017)</a> -->
+                    <div class="row">
+                        <div class="col-2">
+                            <p>Thể loại</p>
+                        </div>
+                        <div class="col-10" *ngFor="let item of movieDetail?.genres; let i = last">
+                            <p>{{ item.name }}{{ !i ? ', ' : '' }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <p>Năm sản xuất</p>
+                        </div>
+                        <div class="col-10">
+                            <p>{{movieDetail?.releaseYear}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            Quốc gia
+                        </div>
+                        <div class="col-10">
+                            <p>{{movieDetail?.country?.name}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">Đạo diễn</div>
+                        <div class="col-10" *ngFor="let item of movieDetail?.directors; let i = last">
+                            <p>{{ item.name }}{{ !i ? ', ' : '' }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-social">
+                    <a href=""><i class="fa fa-heart" aria-hidden="true"></i> Lưu phim</a>
+                </div>
+                <div class="movie-rate">
+                    <div class="movie-rate__point">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <p><span>{{movieDetail?.rating}}</span> /10<br>
+                        </p>
+                    </div>
+                    <div class="movie-rate__rate-star">
+                        <p>Số lượt xem: {{movieDetail?.view}}</p>
+                    </div>
+                </div>
+                <div class="cast-bio movie-nav-tabs">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab"
+                                aria-controls="overview" aria-selected="true">Tổng quát</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab"
+                                aria-controls="review" aria-selected="false">Đánh giá</a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#comment" role="tab" aria-controls="review"
+                                aria-selected="false">Bình luận</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="cast-tab" data-toggle="tab" href="#cast" role="tab"
+                                aria-controls="cast" aria-selected="false">Diễn viên</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="overview" role="tabpanel"
+                            aria-labelledby="overview-tab">
+                            <p>{{movieDetail?.description}}</p>
+                        </div>
+                        <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="review-tab">
+                            <section class="py-4">
+                                <div class="container">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="mb-3">Bình luận</h3>
+                                            <div *ngIf="currentUser" class="align-items-center">
+                                                <button class="btn btn-primary btn-create-review" (click)="open()">Viết bình
+                                                    luận
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <p *ngIf="!currentUser">
+                                            Vui lòng
+                                            <a href="/dang-nhap" class="text-primary text-decoration-underline">đăng nhập</a>
+                                            để viết bình luận
+                                        </p>
+                                        <div class="review-list" *ngFor="let item of getReviewsForCurrentPage()">
+                                            <div class="rating-item d-flex align-items-center mb-3 pb-3">
+                                                <div class="rating-avatar">
+                                                    <img src="{{item ? item?.user?.avatar : 'https://placehold.co/200x200?text=N'}}" alt="">
+                                                </div>
+                                                <div class="rating-info ms-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <p class="rating-name mb-0">
+                                                            <strong>{{item?.user?.name}}</strong>
+                                                        </p>
+                                                        <p class="rating-time mb-0 ms-2">{{item.updatedAt | date: 'dd-MM-yyyy HH:mm'}}</p>
+                                                    </div>
+                                                    <div class="rating-star">
+                                                        <p class="mb-0 fw-bold">
+                                                            <span class="rating-icon"><i class="fa fa-star"></i></span>
+                                                            <span> {{item.rating}}/10 {{ getRatingLabel(item.rating) }}</span>
+                                                        </p>
+                                                    </div>
+                                                    <p class="rating-content mt-1 mb-0 text-muted">{{item.comment}}</p>
+                                                    <div *ngIf="currentUser && currentUser.id === item.user.id">
+                                                        <button (click)="openModalUpdateReview(item.id)" class="border-0 bg-transparent btn-edit-review text-primary me-2 text-decoration-underline">Sửa</button>
+                                                        <button (click)="removeReview(item.id)" class="border-0 bg-transparent btn-delete-review text-danger text-decoration-underline">Xóa</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            
+                                        <div *ngIf="reviews.length > 0" id="review-pagination" class="d-flex justify-content-center align-items-center">
+                                            <nav aria-label="...">
+                                                <ul class="pagination bg-white">
+                                                    <li class="page-item">
+                                                        <a class="page-link" (click)="previousPage()"><i class="fa-solid fa-caret-left"></i></a>
+                                                    </li>
+                                                    <li class="page-item" *ngFor="let page of getTotalPages()">
+                                                        <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a (click)="nextPage()" class="page-link"><i class="fa-solid fa-caret-right"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- Modal -->
+                            <div class="modal" id="myModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                            
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title text-black">Đánh giá phim</h4>
+                                            <button type="button" aria-label="Close" class="btn-close" (click)="close()" data-bs-dismiss="modal"></button>
+                                        </div>
+                            
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            Modal body..
+                                            <div class="rating-stars">
+                                                <i class="fa fa-star" (click)="onStarClick(1)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(2)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(3)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(4)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(5)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(6)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(7)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(8)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(9)"></i>
+                                                <i class="fa fa-star" (click)="onStarClick(10)"></i>
+                                            </div>
+                                            <div class="text-center m-3">
+                                                <p class="review-product-rating-result text-black" id="rating-display"></p>
+                                            </div>
+                                            <div class="review-product-content">
+                                                <form id="form-review">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <textarea rows="5" id="review-content" placeholder="Hãy chia sẻ cảm nhận của bạn về bộ phim"
+                                                                    class="form-control" name="content"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" id="btn-send-review" (click)="onSubmit()">
+                                                Hoàn tất
+                                            </button>
+                                            <button type="button" class="btn btn-close-white border-danger text-dark" data-bs-dismiss="modal" (click)="close()">Close</button>
+                                        </div>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Modal -->
+                        </div>
+                        <div class="tab-pane fade" id="cast" role="tabpanel" aria-labelledby="cast-tab">
+                            <div class="row" *ngFor="let item of movieDetail?.actors">
+                                <div class="col-md-3">
+                                    <div class="card">
+                                        <a href="cast-detail.html"><img class="card-img-top"
+                                                [src]="item?.avatar" alt="Card image cap"></a>
+                                        <div class="card-block text-center text-light">
+                                            <h4 class="card-title">{{item?.name}}</h4>
+                                            <h5 class="card-title">{{item?.birthday | date: 'dd-MM-yyyy'}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pading-md">
+
+        <section class="wrap post-news">
+
+            <div class="wrap-heading">
+                <h2 class="wrap-heading__title">Phim liên quan</h2>
+            </div>
+            <!-- /.wrap-heading -->
+
+            <div class="row">
+                <div class="col-2">
+                    <div class="movie-item">
+                        <a href="" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" alt="Phim moi" src="https://cinema.momocdn.net/img/1007191399195727-82dZuGDo2w5jpdmTCNLTMqmS0GI.jpg">
+                            </div>
+                            <p class="mt-2 text-center text-light">Phim moi</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /section.wrap -->
+
+    </div>
+</main>

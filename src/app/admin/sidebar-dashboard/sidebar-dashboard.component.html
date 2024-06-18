@@ -1,0 +1,163 @@
+<!-- Sidebar -->
+<div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+        <!-- Logo Header -->
+        <div class="logo-header">
+            <a href="index.html" class="logo">
+                <img src="../../../assets/images/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            </a>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                    <i class="gg-menu-left"></i>
+                </button>
+            </div>
+            <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+            </button>
+        </div>
+        <!-- End Logo Header -->
+    </div>
+
+
+    <!-- Start sidebar -->
+    <div class="sidebar-wrapper scrollbar scrollbar-inner" style="overflow-y: auto; scrollbar-width: none;">
+        <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+                <li class="nav-item active">
+                    <a data-bs-toggle="collapse" routerLink="/admin/dashboard" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-tachometer"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Quản lý</h4>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageFilm">
+                        <i class="fas fa-film"></i>
+                        <p>Quản lý phim</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageFilm">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a routerLink="/admin/movies">
+                                    <span class="sub-item">Danh sách phim</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageOrders">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Quản lý đơn hàng</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageOrders">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Danh sách đơn hàng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageUsers">
+                        <i class="fas fa-users"></i>
+                        <p>Quản lý người dùng</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageUsers">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Danh sách người dùng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageTypes">
+                        <i class="fas fa-cubes"></i>
+                        <p>Quản lý thể loại</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageTypes">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Danh sách thể loại</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageNationals">
+                        <i class="fas fa-map"></i>
+                        <p>Quản lý quốc gia</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageNationals">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Danh sách quốc gia</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageDirectors">
+                        <i class="fas fa-users"></i>
+                        <p>Quản lý đạo diễn</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageDirectors">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Danh sách đạo diễn</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#manageActress">
+                        <i class="fas fa-users"></i>
+                        <p>Quản lý diễn viên</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="manageActress">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Danh sách diễn viên</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- End sidebar -->
+</div>

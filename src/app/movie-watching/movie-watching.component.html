@@ -1,0 +1,24 @@
+<main role="main" class="main">
+    <div id="screen" class="py-4 bg-body-tertiary">
+        <div class="container">
+            <div class="w-100 mx-auto">
+                <video controls width="100%" style="max-height: 500px;" [src]="currentEpisode?.videoUrl">
+                    <source [src]="currentEpisode?.videoUrl" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <!-- Tập phim -->
+            <div class="mt-4" *ngIf="episodes.length > 0">
+                <h3 class="mb-3">Tập phim</h3>
+                <div class="grid-container">
+                    <a routerLinkActive="active" 
+                    (click)="activeTap(episode?.orderEpisode)"
+                    routerLink="/xem-phim/{{movieId}}/{{slug}}"
+                    [queryParams]="{tap: episode?.orderEpisode}" class="btn btn-light me-2 mb-2 text-light"
+                    *ngFor="let episode of episodes">{{ episode?.title }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

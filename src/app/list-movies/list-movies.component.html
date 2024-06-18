@@ -1,0 +1,162 @@
+<main role="main" class="main">
+    <div class="container-fluid pading-md mt-5">
+        <section class="wrap">
+            <div *ngIf="movieType" class="d-flex align-items-center pt-4 justify-content-between">
+                <h2>Danh sách {{movieType}}</h2>
+            </div>
+            <div *ngIf="genre" class="d-flex align-items-center pt-4 justify-content-between">
+                <h2>Thể loại: {{genre}}</h2>
+            </div>
+            <div *ngIf="country" class="d-flex align-items-center pt-4 justify-content-between">
+                <h2>Quốc gia: {{country}}</h2>
+            </div>
+            <div class="row" *ngIf="singleMovie">
+                <div class="col-2" *ngFor="let item of singleMovie?.content">
+                    <div class="movie-item">
+                        <a routerLinkActive="active" routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="seriesMovie">
+                <div class="col-2" *ngFor="let item of seriesMovie?.content">
+                    <div class="movie-item">
+                        <a routerLinkActive="active" routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="theaterMovie">
+                <div class="col-2" *ngFor="let item of theaterMovie?.content">
+                    <div class="movie-item">
+                        <a routerLinkActive="active" routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="storeMovie">
+                <div class="col-2" *ngFor="let item of storeMovie?.content">
+                    <div class="movie-item mb-4">
+                        <a routerLink="chi-tiet-phim/{{item.id}}/{{item.slug}}" [queryParams]="{type : item.accessType}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                                <span *ngIf="item.type == 'PHIM_BO'" class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim bộ</span>
+                            </div>
+                            <p class="mt-2 text-center mb-1">{{item.title}}</p>
+                            <div class="d-flex align-items-center text-muted justify-content-center" style="font-size: 14px;">
+                                <span>
+                                    <span class="fw-medium">{{(+item.rating) | number: '1.0-0'}}</span>
+                                    <span style="color: #EDBB0E"><i class="fa fa-star"></i></span>
+                                </span>
+                                <span class="ms-2 fw-medium">{{(+item.price) | number: '1.0-0'}}đ</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="genreMovie">
+                <div class="col-2" *ngFor="let item of genreMovie?.content">
+                    <div class="movie-item">
+                        <a routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                                <span *ngIf="item.type == 'PHIM_BO'" class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim bộ</span>
+                                <span *ngIf="item.type == 'PHIM_LE'" class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim lẻ</span>
+                                <span *ngIf="item.type == 'PHIM_CHIEU_RAP'" class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim chiếu rạp</span>
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="countryMovie">
+                <div class="col-2" *ngFor="let item of countryMovie?.content">
+                    <div class="movie-item">
+                        <a routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                                <span *ngIf="item.type == 'PHIM_BO'"
+                                    class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim bộ</span>
+                                <span *ngIf="item.type == 'PHIM_LE'"
+                                    class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim lẻ</span>
+                                <span *ngIf="item.type == 'PHIM_CHIEU_RAP'"
+                                    class="position-absolute badge text-bg-danger top-0 start-0 rounded-1">Phim chiếu rạp</span>
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <button type="button" class="btn btn-primary d-block mx-auto m-5">Xem thêm</button> -->
+            <div class="d-flex justify-content-center mt-4" id="pagination" *ngIf="singleMovie">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" (click)="previousPage()"><i class="fa-solid fa-caret-left"></i></a>
+                        </li>
+                        <li class="page-item" [ngClass]="{ active: currentPage === 1 }">
+                            <a class="page-link" (click)="activePage(currentPage)" routerLinkActive="active" routerLink="/phim-le" [queryParams]="{page: currentPage}">{{currentPage}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a (click)="nextPage()" class="page-link"><i class="fa-solid fa-caret-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4" id="pagination" *ngIf="storeMovie">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" (click)="previousPage()"><i class="fa-solid fa-caret-left"></i></a>
+                        </li>
+                        <li class="page-item" [ngClass]="{ active: currentPage === 1 }">
+                            <a class="page-link" (click)="activePage(currentPage)" routerLinkActive="active" routerLink="/cua-hang"
+                                [queryParams]="{page: currentPage}">{{currentPage}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a (click)="nextPage()" class="page-link"><i class="fa-solid fa-caret-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4" id="pagination" *ngIf="genreMovie">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" (click)="previousPage()"><i class="fa-solid fa-caret-left"></i></a>
+                        </li>
+                        <li class="page-item" [ngClass]="{ active: currentPage === 1 }">
+                            <a class="page-link" (click)="activePage(currentPage)" routerLinkActive="active" routerLink="/the-loai/{{slug}}/"
+                                [queryParams]="{page: currentPage}">{{currentPage}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a (click)="nextPage()" class="page-link"><i class="fa-solid fa-caret-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </section>
+        <!-- /.section -->
+    </div>
+</main>

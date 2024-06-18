@@ -1,0 +1,67 @@
+<main role="main" class="main">
+    <div class="container-fluid pading-md mb-5">
+        <section class="wrap">
+            <div class="d-flex align-items-center pt-4 justify-content-between">
+                <h2>Phim lẻ mới</h2>
+                <a class="text-primary text-decoration-none" routerLink="phim-le">Xem thêm</a>
+            </div>
+            <!-- /.wrap-heading -->
+            <div class="row">
+                <div class="col-2" *ngFor="let item of singleMovie">
+                    <div class="movie-item">
+                        <a routerLinkActive="active" routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.section -->
+
+        <section class="wrap">
+
+            <div class="d-flex align-items-center pt-4 justify-content-between">
+                <h2>Phim bộ mới</h2>
+                <a class="text-primary text-decoration-none" routerLink="phim-bo">Xem thêm</a>
+            </div>
+            <!-- /.wrap-heading -->
+            <div class="row">
+                <div class="col-2" *ngFor="let item of seriesMovie">
+                    <div class="movie-item">
+                        <a routerLinkActive="active" routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="wrap">
+
+            <div class="d-flex align-items-center pt-4 justify-content-between">
+                <h2>Phim chiếu rạp</h2>
+                <a class="text-primary text-decoration-none" routerLink="phim-chieu-rap">Xem thêm</a>
+            </div>
+            <!-- /.wrap-heading -->
+
+            <div class="row">
+                <div class="col-2" *ngFor="let item of theaterMovie">
+                    <div class="movie-item">
+                        <a routerLinkActive="active" routerLink="/chi-tiet-phim/{{item.id}}/{{item.slug}}" class="movie-media">
+                            <div class="rounded overflow-hidden movie-poster">
+                                <img class="w-100 h-100" [src]="item.poster" alt="{{item.title}}">
+                            </div>
+                            <p class="mt-2 text-center">{{item.title}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

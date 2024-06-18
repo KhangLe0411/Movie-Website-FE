@@ -1,0 +1,72 @@
+<!-- <p>create-movie works!</p> -->
+<div class="container">
+    <div class="m-2" style="padding: 20px; min-height: 360px; background: rgb(255, 255, 255); border-radius: 8px;">
+        <div class="d-flex mb-3">
+            <div class="btn btn-primary rounded-3 me-2"><a style="text-decoration: none; color: white;"
+                    routerLink="/admin/movies"><i class="me-2 fas fa-chevron-left"></i>Quay lại</a></div>
+            <div class="btn btn-info rounded-3 ms-2"><a style="text-decoration: none; color: white;"
+                    routerLink="">Tạo phim</a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="form-create-film">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tên phim</label>
+                                        <input type="text" class="form-control" id="title" name="title" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Mô tả ngắn</label>
+                                        <textarea id="description" class="form-control" rows="12" name="description"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Đạo diễn</label>
+                                        <div class="">
+                                            <select class="select form-control" multiple id="director">
+                                                <option value="1">1</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Diễn viên</label>
+                                        <div class="select2-purple">
+                                            <select class="select2 form-control" multiple="multiple" id="actor">
+                                                <option th:each="actor : ${actorList}" th:value="${actor.id}" th:text="${actor.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Danh mục</label>
+                                        <div class="select2-purple">
+                                            <select class="select2 form-control" multiple="multiple" id="genre">
+                                                <option th:each="genre : ${genreList}" th:value="${genre.id}" th:text="${genre.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Quốc gia</label>
+                                        <div class="select2-purple">
+                                            <select class="select2 form-control" id="country" name="country">
+                                                <option th:each="country : ${countryList}" th:value="${country.id}" th:text="${country.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

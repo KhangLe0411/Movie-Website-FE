@@ -1,0 +1,140 @@
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-4 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle" width="150px" height="190px"
+                    src="{{profileImage}}">
+                <!-- <span class="font-weight-bold">{{fullName}}</span> -->
+                <!-- <span class="text-black-50">edogaru&#64;mail.com.my</span> -->
+                <input (change)="onFileSelected($event)" type="file"/>
+                <span> </span>
+                <div>
+                    <button class="btn btn-dark" type="button" color="primary" (click)="onUpload()">Change Avatar</button>
+                </div>
+            </div>
+        </div>
+        <form class="col-md-8 border-right" [formGroup]="profileForm" (ngSubmit)="onSubmited()">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <h4 class="">Thông tin cá nhân</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label class="labels">FullName</label>
+                        <input type="text" class="form-control" placeholder="full name" [(ngModel)]="fullName" formControlName="name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="labels">Email</label>
+                        <input readonly type="text"
+                            class="form-control" [value]="email" placeholder="email">
+                    </div>
+                </div>
+                <div class="form-text text-danger" *ngIf="Name.errors?.['required'] && (Name.dirty || Name.touched)">
+                    Name is required
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <label class="labels">Mobile Number</label>
+                        <input type="text" class="form-control" placeholder="enter phone number" [(ngModel)]="phone" formControlName="phone">
+                    </div>
+                    <div class="form-text text-danger" *ngIf="Phone.errors?.['required'] && (Phone.dirty || Phone.touched)">
+                        Phone is required
+                    </div>
+                    <div class="form-text text-danger" *ngIf="Phone.errors?.['maxLength'] && (Phone.dirty || Phone.touched)">
+                        Phone must be 10 digits.
+                    </div>
+                    <div class="form-text text-danger" *ngIf="Phone.errors?.['pattern'] && (Phone.dirty || Phone.touched)">
+                        Invalid phone number.
+                    </div>
+                    <div class="col-md-12 mt-2"><label class="labels">Role</label><input readonly type="text"
+                            class="form-control" placeholder="Role" [value]="role"></div>
+                </div>
+                <div class="mt-5 text-center">
+                    <button class="btn btn-primary profile-button me-5" type="submit" [disabled]="profileForm.invalid">
+                        Save Profile
+                    </button>
+                    <button class="btn btn-primary ms-5" type="button" (click)="open()">
+                        Đổi mật khẩu
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-black">Đổi mật khẩu</h4>
+                <button type="button" aria-label="Close" class="btn-close" (click)="close()"
+                    data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="form-review" [formGroup]="pwdForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col">
+                            <label for="password" class="form-label">Mật khẩu cũ</label>
+                            <input type="password" class="form-control" id="password" formControlName="password">
+                            <div class="form-text text-danger" *ngIf="Password.errors?.['required'] && (Password.dirty || Password.touched)">
+                                Mật khẩu không được để trống
+                            </div>
+                            <div class="form-text text-danger"
+                                *ngIf="Password.errors?.['minlength'] || Password.errors?.['maxlength'] && (Password.dirty || Password.touched)">
+                                Mật khẩu nên có ít nhất 6 - 15 ký tự
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="password" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="newPassword" formControlName="newPassword">
+                            <div class="form-text text-danger" *ngIf="NewPassword.errors?.['required'] && (NewPassword.dirty || NewPassword.touched)">
+                                Mật khẩu mới không được để trống
+                            </div>
+                            <div class="form-text text-danger"
+                                *ngIf="NewPassword.errors?.['minlength'] || NewPassword.errors?.['maxlength'] && (NewPassword.dirty || NewPassword.touched)">
+                                Mật khẩu mới nên có ít nhất 6 - 15 ký tự
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="password" class="form-label">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" id="rePassword" formControlName="rePassword">
+                            <div class="form-text text-danger" *ngIf="RePassword.errors?.['required'] && (RePassword.dirty || RePassword.touched)">
+                                Mật khẩu mới không được để trống
+                            </div>
+                            <div class="form-text text-danger"
+                                *ngIf="RePassword.errors?.['minlength'] || RePassword.errors?.['maxlength'] && (RePassword.dirty || RePassword.touched)">
+                                Mật khẩu mới nên có ít nhất 6 - 15 ký tự
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" [disabled]="pwdForm.invalid" class="btn btn-primary" id="btn-send-review">
+                            Xác nhận
+                        </button>
+                        <button type="button" class="btn btn-close-white border-danger text-dark" data-bs-dismiss="modal"
+                            (click)="close()">Hủy</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <!-- <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="btn-send-review">
+                    Xác nhận
+                </button>
+                <button type="button" class="btn btn-close-white border-danger text-dark" data-bs-dismiss="modal"
+                    (click)="close()">Hủy</button>
+            </div> -->
+
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
