@@ -22,25 +22,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center align-middle" style="overflow-wrap: break-word;"><a routerLink="/admin/movies/1/detail" routerLinkActive="active">Xác Ướp: Cuộc Phiêu Lưu Đến London</a></td>
-                                        <td class="text-center align-middle">
-                                            <div class="d-flex flex-column">
+                                    <tr *ngFor="let item of filmList">
+                                        <td class="align-middle" style="overflow-wrap: break-word;"><a routerLink="/admin/movies/{{item.id}}/detail" routerLinkActive="active">{{item.title}}</a></td>
+                                        <td class="align-middle">
+                                            <div class="flex-column" *ngIf="item.type === 'PHIM_BO'">
                                                 Phim bộ
-                                                <span class="d-inline-block badge bg-danger">Premium</span>
+                                                <span class="d-inline-block badge bg-danger" *ngIf="item.accessType === 'PAID'">Premium</span>
+                                            </div>
+                                            <div class="flex-column" *ngIf="item.type === 'PHIM_LE'">
+                                                Phim lẻ
+                                                <span class="d-inline-block badge bg-danger" *ngIf="item.accessType === 'PAID'">Premium</span>
+                                            </div>
+                                            <div class="flex-column" *ngIf="item.type === 'PHIM_CHIEU_RAP'">
+                                                Phim chiếu rạp
+                                                <span class="d-inline-block badge bg-danger" *ngIf="item.accessType === 'PAID'">Premium</span>
                                             </div>
                                         </td>
-                                        <td class="text-center align-middle">2022</td>
-                                        <td>
-                                            <span class="badge bg-info me-1">Gia đình</span><br>
-                                            <span class="badge bg-info me-1">Phiêu lưu</span>
+                                        <td class="align-middle">{{item.releaseYear}}</td>
+                                        <td *ngFor="let i of item.genres">
+                                            <span class="badge bg-info me-1">{{i.name}}</span><br>
                                         </td>
-                                        <td class="align-middle">3,168</td>
+                                        <td class="align-middle">{{item.view | number}}</td>
                                         <td class="align-middle">
-                                            <span>7.4</span>
+                                            <span>{{item.rating | number}}</span>
                                             <span style="color: #EDBB0E;"><i class="fas fa-star"></i></span>
                                         </td>
-                                        <td class="align-middle"><span class="badge bg-success">Công khai</span></td>
+                                        <td class="align-middle"><span class="badge bg-success">{{item.status ? 'Công khai' : 'Nháp'}}</span></td>
                                     </tr>
                                 </tbody>
                             </table>

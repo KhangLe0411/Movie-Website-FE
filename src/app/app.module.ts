@@ -27,6 +27,7 @@ import { SidebarDashboardComponent } from './admin/sidebar-dashboard/sidebar-das
 import { MoviesComponent } from './admin/movie/movies/movies.component';
 import { MovieAdminDetailComponent } from './admin/movie/movie-admin-detail/movie-admin-detail.component';
 import { CreateMovieComponent } from './admin/movie/create-movie/create-movie.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { CreateMovieComponent } from './admin/movie/create-movie/create-movie.co
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     CommonModule,
+    NgMultiSelectDropDownModule.forRoot(),
   ],
   providers: [
     provideClientHydration(),

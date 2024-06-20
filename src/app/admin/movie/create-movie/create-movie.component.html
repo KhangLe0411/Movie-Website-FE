@@ -1,65 +1,146 @@
 <!-- <p>create-movie works!</p> -->
 <div class="container">
     <div class="m-2" style="padding: 20px; min-height: 360px; background: rgb(255, 255, 255); border-radius: 8px;">
-        <div class="d-flex mb-3">
-            <div class="btn btn-primary rounded-3 me-2"><a style="text-decoration: none; color: white;"
-                    routerLink="/admin/movies"><i class="me-2 fas fa-chevron-left"></i>Quay lại</a></div>
-            <div class="btn btn-info rounded-3 ms-2"><a style="text-decoration: none; color: white;"
-                    routerLink="">Tạo phim</a></div>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form id="form-create-film">
+                        <form id="form-create-film" [formGroup]="form" (ngSubmit)="createMovie()">
+                            <div class="d-flex mb-3">
+                                <div class="btn btn-primary rounded-3 me-2"><a style="text-decoration: none; color: white;"
+                                        routerLink="/admin/movies"><i class="me-2 fas fa-chevron-left"></i>Quay lại</a></div>
+                                <div class="d-grid ms-2">
+                                    <button [disabled]="form.invalid" type="submit" class="btn btn-info rounded-3">
+                                        <i class="me-2 fas fa-plus"></i>
+                                        Tạo Phim
+                                    </button>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Tên phim</label>
-                                        <input type="text" class="form-control" id="title" name="title" />
+                                        <input formControlName="title" type="text" class="form-control" name="title" />
+                                        <div class="form-text text-danger" *ngIf="Title.errors?.['required'] && (Title.dirty || Title.touched)">
+                                            Tên phim không được để trống
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Trailer</label>
+                                        <input formControlName="trailer" type="text" class="form-control" name="trailer" />
+                                        <div class="form-text text-danger" *ngIf="Trailer.errors?.['required'] && (Trailer.dirty || Trailer.touched)">
+                                            Trailer không được để trống
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Mô tả ngắn</label>
-                                        <textarea id="description" class="form-control" rows="12" name="description"></textarea>
+                                        <textarea formControlName="desc" id="description" class="form-control" rows="7" name="description"></textarea>
+                                        <div class="form-text text-danger" *ngIf="Description.errors?.['required'] && (Description.dirty || Description.touched)">
+                                            Mô tả không được để trống
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Đạo diễn</label>
-                                        <div class="">
-                                            <select class="select form-control" multiple id="director">
-                                                <option value="1">1</option>
-                                            </select>
+                                        <div class="select2-purple">
+                                            <ng-multiselect-dropdown
+                                                formControlName="director"
+                                                [placeholder]="'Select options'"
+                                                [settings]="dropdownMultiSettings"
+                                                [data]="dropdownDirectorList">
+                                            </ng-multiselect-dropdown>
+                                            <div class="form-text text-danger" *ngIf="Director.errors?.['required'] && (Director.dirty || Director.touched)">
+                                                Đạo diễn không được để trống
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Diễn viên</label>
                                         <div class="select2-purple">
-                                            <select class="select2 form-control" multiple="multiple" id="actor">
-                                                <option th:each="actor : ${actorList}" th:value="${actor.id}" th:text="${actor.name}"></option>
-                                            </select>
+                                            <ng-multiselect-dropdown formControlName="actor" 
+                                                [placeholder]="'Select options'" [settings]="dropdownMultiSettings"
+                                                [data]="dropdownActorList">
+                                            </ng-multiselect-dropdown>
+                                            <div class="form-text text-danger" *ngIf="Actor.errors?.['required'] && (Actor.dirty || Actor.touched)">
+                                                Diễn viên không được để trống
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Danh mục</label>
+                                        <label>Thể loại</label>
                                         <div class="select2-purple">
-                                            <select class="select2 form-control" multiple="multiple" id="genre">
-                                                <option th:each="genre : ${genreList}" th:value="${genre.id}" th:text="${genre.name}"></option>
-                                            </select>
+                                            <ng-multiselect-dropdown formControlName="genre" [placeholder]="'Select options'" [settings]="dropdownMultiSettings"
+                                                [data]="dropdownGenreList">
+                                            </ng-multiselect-dropdown>
+                                            <div class="form-text text-danger" *ngIf="Genre.errors?.['required'] && (Genre.dirty || Genre.touched)">
+                                                Thể loại không được để trống
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
+                                        <label>Năm phát hành</label>
+                                        <input formControlName="releaseyear" type="number" class="form-control" name="releaseyear" />
+                                        <div class="form-text text-danger" *ngIf="ReleaseYear.errors?.['required'] && (ReleaseYear.dirty || ReleaseYear.touched)">
+                                            Năm phát hành không được để trống
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Loại phim</label>
+                                        <div class="select2-purple">
+                                            <ng-multiselect-dropdown formControlName="filmtype" [placeholder]="'Select options'"
+                                                [settings]="dropdownSingleSettings" 
+                                                [data]="[{item_id: 1, item_text: 'Phim lẻ'}, {item_id: 2, item_text: 'Phim bộ'}, {item_id: 3, item_text: 'Phim chiếu rạp'}]">
+                                            </ng-multiselect-dropdown>
+                                            <div class="form-text text-danger"
+                                                *ngIf="FilmType.errors?.['required'] && (FilmType.dirty || FilmType.touched)">
+                                                Loại phim không được để trống
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label>Quốc gia</label>
                                         <div class="select2-purple">
-                                            <select class="select2 form-control" id="country" name="country">
-                                                <option th:each="country : ${countryList}" th:value="${country.id}" th:text="${country.name}"></option>
-                                            </select>
+                                            <ng-multiselect-dropdown formControlName="national" [placeholder]="'Select options'" [settings]="dropdownSingleSettings"
+                                                [data]="dropdownNationalList">
+                                            </ng-multiselect-dropdown>
+                                            <div class="form-text text-danger" *ngIf="National.errors?.['required'] && (National.dirty || National.touched)">
+                                                Quốc gia không được để trống
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Trạng thái</label>
+                                        <ng-multiselect-dropdown
+                                            formControlName="status"
+                                            [placeholder]="'Select options'"
+                                            [settings]="dropdownSingleSettings"
+                                            [data]="[{item_id: 1, item_text: true}, {item_id: 2, item_text: false}]">
+                                        </ng-multiselect-dropdown>
+                                        <div class="form-text text-danger" *ngIf="Status.errors?.['required'] && (Status.dirty || Status.touched)">
+                                            Trạng thái không được để trống
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="accessType" (click)="groupPrice()">
+                                            <label for="accessType" class="custom-control-label">Phim trả phí</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" id="form-group-price" *ngIf="checked">
+                                        <label>Giá</label>
+                                        <input type="number" formControlName="price" class="form-control" id="price" name="price" />
                                     </div>
                                 </div>
                             </div>
