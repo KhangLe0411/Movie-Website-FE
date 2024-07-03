@@ -1,1 +1,324 @@
-<p>movie-admin-detail works!</p>
+<!-- <p>movie-admin-detail works!</p> -->
+<div class="container">
+    <div class="m-2" style="padding: 20px; min-height: 360px; background: rgb(255, 255, 255); border-radius: 8px;">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" 
+                                href="#custom-content-below-home" role="tab"
+                                aria-controls="custom-content-below-home" aria-selected="true">Thông tin phim</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" 
+                                href="#custom-content-below-profile"
+                                role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Danh sách
+                                    video phim ({{episodes?.length}})</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-content-below-messages-tab" data-toggle="pill" 
+                                href="#custom-content-above-messages"
+                                role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Review ({{reviews?.length}})</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="custom-content-below-tabContent">
+                            <div class="tab-pane fade active show" id="custom-content-below-home" role="tabpanel"
+                                aria-labelledby="custom-content-below-home-tab">
+                                <form id="form-create-film" [formGroup]="form" (ngSubmit)="updateFilm()">
+                                    <div class="d-flex mb-3 mt-3">
+                                        <div class="btn btn-primary rounded-3 me-2"><a style="text-decoration: none; color: white;"
+                                            routerLink="/admin/movies"><i class="me-2 fas fa-chevron-left"></i>Quay lại</a></div>
+                                        <div class="d-grid ms-2">
+                                            <button type="submit" class="btn btn-info rounded-3">
+                                                <i class="me-2 fas fa-save"></i>
+                                                Cập nhật phim
+                                            </button>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <div class="btn btn-danger rounded-3 me-2">
+                                                <a style="text-decoration: none; color: white;" routerLink="">
+                                                    <i class="me-2 fas fa-trash"></i>Xóa phim
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>Tên phim</label>
+                                                <input formControlName="title" type="text" class="form-control" name="title" [ngModel]="response?.title"/>
+                                                <div class="form-text text-danger" *ngIf="Title.errors?.['required'] && (Title.dirty || Title.touched)">
+                                                    Tên phim không được để trống
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Trailer</label>
+                                                <input formControlName="trailer" type="text" class="form-control" name="trailer" [ngModel]="response?.trailerUrl"/>
+                                                <div class="form-text text-danger" *ngIf="Trailer.errors?.['required'] && (Trailer.dirty || Trailer.touched)">
+                                                    Trailer không được để trống
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Mô tả ngắn</label>
+                                                <textarea formControlName="desc" id="description" class="form-control" rows="7" name="description" [ngModel]="response?.description"></textarea>
+                                                <div class="form-text text-danger"
+                                                    *ngIf="Description.errors?.['required'] && (Description.dirty || Description.touched)">
+                                                    Mô tả không được để trống
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Đạo diễn</label>
+                                                <div class="select2-purple">
+                                                    <ng-multiselect-dropdown formControlName="director" [placeholder]="'Select options'"
+                                                        [settings]="dropdownMultiSettings" [data]="dropdownDirectorList" [(ngModel)]="selectedDirector">
+                                                    </ng-multiselect-dropdown>
+                                                    <div class="form-text text-danger"
+                                                        *ngIf="Director.errors?.['required'] && (Director.dirty || Director.touched)">
+                                                        Đạo diễn không được để trống
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Diễn viên</label>
+                                                <div class="select2-purple">
+                                                    <ng-multiselect-dropdown formControlName="actor" [placeholder]="'Select options'"
+                                                        [settings]="dropdownMultiSettings" [data]="dropdownActorList" [(ngModel)]="selectedActor">
+                                                    </ng-multiselect-dropdown>
+                                                    <div class="form-text text-danger" *ngIf="Actor.errors?.['required'] && (Actor.dirty || Actor.touched)">
+                                                        Diễn viên không được để trống
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Thể loại</label>
+                                                <div class="select2-purple">
+                                                    <ng-multiselect-dropdown formControlName="genre" [placeholder]="'Select options'"
+                                                        [settings]="dropdownMultiSettings" [data]="dropdownGenreList" [(ngModel)]="selectedGenre">
+                                                    </ng-multiselect-dropdown>
+                                                    <div class="form-text text-danger" *ngIf="Genre.errors?.['required'] && (Genre.dirty || Genre.touched)">
+                                                        Thể loại không được để trống
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Năm phát hành</label>
+                                                <input formControlName="releaseyear" type="number" class="form-control" name="releaseyear" [ngModel]="response?.releaseYear" />
+                                                <div class="form-text text-danger"
+                                                    *ngIf="ReleaseYear.errors?.['required'] && (ReleaseYear.dirty || ReleaseYear.touched)">
+                                                    Năm phát hành không được để trống
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Loại phim</label>
+                                                <div class="select2-purple">
+                                                    <ng-multiselect-dropdown formControlName="filmtype" [placeholder]="'Select options'"
+                                                        [settings]="dropdownSingleSettings"
+                                                        [data]="[{item_id: 1, item_text: 'Phim lẻ'}, {item_id: 2, item_text: 'Phim bộ'}, {item_id: 3, item_text: 'Phim chiếu rạp'}]"
+                                                        [(ngModel)]="selectedFilmType">
+                                                    </ng-multiselect-dropdown>
+                                                    <div class="form-text text-danger"
+                                                        *ngIf="FilmType.errors?.['required'] && (FilmType.dirty || FilmType.touched)">
+                                                        Loại phim không được để trống
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Quốc gia</label>
+                                                <div class="select2-purple">
+                                                    <ng-multiselect-dropdown formControlName="national" [placeholder]="'Select options'"
+                                                        [settings]="dropdownSingleSettings" [data]="dropdownNationalList" [(ngModel)]="selectedNational">
+                                                    </ng-multiselect-dropdown>
+                                                    <div class="form-text text-danger"
+                                                        *ngIf="National.errors?.['required'] && (National.dirty || National.touched)">
+                                                        Quốc gia không được để trống
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Trạng thái</label>
+                                                <ng-multiselect-dropdown formControlName="status" [placeholder]="'Select options'"
+                                                    [settings]="dropdownSingleSettings" [data]="[{item_id: 1, item_text: true}, {item_id: 2, item_text: false}]"
+                                                    [(ngModel)]="selectedStatus">
+                                                </ng-multiselect-dropdown>
+                                                <div class="form-text text-danger" *ngIf="Status.errors?.['required'] && (Status.dirty || Status.touched)">
+                                                    Trạng thái không được để trống
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="accessType" (click)="groupPrice()" [checked]="checked">
+                                                    <label for="accessType" class="custom-control-label">Phim trả phí</label>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group" id="form-group-price" *ngIf="checked">
+                                                <label>Giá</label>
+                                                <input type="number" formControlName="price" class="form-control" name="price" [ngModel]="response?.price"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="image-preview-container mb-3">
+                                                    <img [src]="response?.poster" alt="" id="image-preview" style="width: 100%; height: 300px; object-fit: cover;">
+                                                </div>
+                                                <label for="image-input" class="btn btn-info btn-flat rounded">
+                                                    Chọn hình ảnh
+                                                </label>
+                                                <input type="file" id="image-input" name="image" class="d-none" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel"
+                            aria-labelledby="custom-content-below-profile-tab">
+                                <div class="row mt-4">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary mb-3" id="btn-open-modal" (click)="openModalAddEpisode()">Thêm tập phim
+                                        </button>
+                                        <table id="table-episode" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5%">#</th>
+                                                    <th style="width: 20%">Tên tập phim</th>
+                                                    <th style="width: 40%">Link</th>
+                                                    <th style="width: 10%">Thời lượng</th>
+                                                    <th style="width: 10%">Trạng thái</th>
+                                                    <th style="width: 15%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngFor="let item of episodes">
+                                                <tr>
+                                                    <td>{{item?.orderEpisode}}</td>
+                                                    <td>{{item?.title}}</td>
+                                                    <!-- <td>{{item?.videoUrl}}</td> -->
+                                                    <td title="{{item?.videoUrl}}">
+                                                        {{item?.videoUrl?.substring(0, 20)}}...
+                                                    </td>
+                                                    <td>{{item?.duration}}</td>
+                                                    <td *ngIf="item?.status">
+                                                        <span class="badge bg-success">Công khai</span>
+                                                    </td>
+                                                    <td *ngIf="!item?.status">
+                                                        <span class="badge bg-secondary">Nháp</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <label for="episode-{{item.id}}" class="btn btn-primary btn-sm text-white mb-0 me-1">
+                                                                <i class="fas fa-upload"></i>
+                                                            </label>
+                                                            <input type="file" id="episode-{{item.id}}" class="d-none" (change)="uploadVideo($event)" />
+                                                            <button class="btn btn-success btn-sm me-1" onclick="openModalUpdate()">
+                                                                <i class="fas fa-pencil"></i>
+                                                            </button>
+                                                            <button class="btn btn-danger btn-sm" onclick="deleteEpisode()">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="d-flex justify-content-center mt-3" id="episode-pagination"></div>
+
+                                        <!-- Modal episode -->
+                                        <div class="modal mask" id="modal-episode" data-bs-backdrop="static"
+                                            data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="modal-genre-title" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fs-5" id="modal-episode-title">Tạo
+                                                            tập phim
+                                                        </h5>
+                                                        <button type="button" (click)="closeModalAddEpisode()" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form [formGroup]="episodeForm" (ngSubmit)="addEpisode()">
+                                                            <div class="form-group">
+                                                                <label for="episode-title" class="form-label">Tên
+                                                                    tập phim</label>
+                                                                <input type="text" formControlName="episodeTitle" class="form-control" id="episode-title" placeholder="Tập 1, Tập 2, ..." name="title">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="episode-display-order" class="form-label">Tập số bao nhiêu</label>
+                                                                <input type="text" formControlName="episode" class="form-control" id="episode-display-order" placeholder="1, 2, 3, ..." name="displayOrder">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Trạng thái</label>
+                                                                <select formControlName="status" class="form-control" id="episode-status" name="status">
+                                                                    <option value="false" selected>Nháp</option>
+                                                                    <option value="true">Công khai</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-primary" id="btn-handle-episode">Xác nhận
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="custom-content-above-messages" role="tabpanel"
+                                aria-labelledby="custom-content-above-messages-tab">
+                                <div class="row mt-4">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-hover" id="table-review">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 20%">Tác giả</th>
+                                                    <th style="width: 10%">Đánh giá</th>
+                                                    <th style="width: 45%">Nội dung</th>
+                                                    <th style="width: 20%">Thời gian</th>
+                                                    <th style="width: 5%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngFor="let item of reviews">
+                                                <tr>
+                                                    <td>{{item.user.name}}</td>
+                                                    <td>
+                                                        <span>{{item.rating}}</span>
+                                                        <span style="color: #EDBB0E"><i class="fas fa-star"></i></span>
+                                                    </td>
+                                                    <td>{{item.comment}}</td>
+                                                    <td>{{item.createdAt | date: 'dd-MM-yyyy'}}</td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-sm" onclick="deleteReview()">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="d-flex justify-content-center mt-3" id="review-pagination"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

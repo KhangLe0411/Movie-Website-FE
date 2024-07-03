@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateMovieRequest } from './createMovieRequest';
 import { MovieAdminService } from '../movie-admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EpisodeRequest } from '../movie-admin-detail/episodeRequest';
 
 @Component({
   selector: 'app-create-movie',
@@ -19,6 +20,10 @@ export class CreateMovieComponent implements OnInit {
   dropdownSingleSettings!: any;
   form!: FormGroup;
   request!: CreateMovieRequest;
+  // selectedItems: any = [
+  //   { item_id: 1, item_text: 'Viễn Tây' },
+  //   { item_id: 2, item_text: 'Hành động' },
+  // ];
 
   constructor(private movieService: MovieAdminService) {
     this.request = {
@@ -40,20 +45,8 @@ export class CreateMovieComponent implements OnInit {
     this.initForm();
     this.getAllGenres();
     this.getAllCountries();
-    this.dropdownDirectorList = [
-      { item_id: 1, item_text: 'Apple' },
-      { item_id: 2, item_text: 'Orange' },
-      { item_id: 3, item_text: 'Cabbage' },
-    ];
-    this.dropdownActorList = [
-      { item_id: 1, item_text: 'A' },
-      { item_id: 2, item_text: 'B' },
-      { item_id: 3, item_text: 'C' },
-    ];
-    // this.dropdownNationalList = [
-    //   { item_id: 1, item_text: 'VN' },
-    //   { item_id: 2, item_text: 'TQ' },
-    // ];
+    this.getAllActors();
+    this.getAllDirectors();
     this.dropdownMultiSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -158,6 +151,30 @@ export class CreateMovieComponent implements OnInit {
     });
   }
 
+  getAllActors() {
+    this.movieService.getAllActors().subscribe({
+      next: (data) => {
+        this.dropdownActorList = data.map((item: any) => ({
+          item_id: item.id,
+          item_text: item.name,
+        }));
+      },
+      error: (err: HttpErrorResponse) => {},
+    });
+  }
+
+  getAllDirectors() {
+    this.movieService.getAllDirectors().subscribe({
+      next: (data) => {
+        this.dropdownDirectorList = data.map((item: any) => ({
+          item_id: item.id,
+          item_text: item.name,
+        }));
+      },
+      error: (err: HttpErrorResponse) => {},
+    });
+  }
+
   createMovie() {
     this.request.title = this.form.get('title')?.value;
     this.request.trailer = this.form.get('trailer')?.value;
@@ -180,5 +197,6 @@ export class CreateMovieComponent implements OnInit {
     this.request.price = this.checked
       ? Number(this.form.get('price')?.value)
       : 0;
+    console.log(this.request);
   }
 }

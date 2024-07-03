@@ -1,0 +1,9 @@
+@import url("../../assets/css/kaiadmin.min.css");
+
+.mask {
+    position: fixed;
+    inset: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+}
